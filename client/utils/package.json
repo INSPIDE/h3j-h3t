@@ -1,0 +1,19 @@
+{
+    "name": "vtgjvt",
+    "version": "1.0.0",
+    "main": "index.js",
+    "private": true,
+    "devDependencies": {
+        "browserify": "^17.0.0",
+        "uglify-js": "^3.12.2"
+    },
+    "dependencies": {
+        "@mapbox/vt2geojson": "^1.1.5",
+        "geojson-vt": "^3.2.1",
+        "h3-js": "^3.7.0",
+        "vt-pbf": "^3.1.1"
+    },
+    "scripts": {
+        "build": "browserify index.js --standalone utils | uglifyjs > dist/utils.js"
+    }
+}
