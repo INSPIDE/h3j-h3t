@@ -29,7 +29,7 @@ maplibre.addProtocol("h3t", (params, callback) => {
         const 
           vt = utils.tovt(gj),
           f = vt.getTile(z, x, y),
-          p = utils.topbf.fromGeojsonVt({ 'mapillary-images': f });
+          p = utils.topbf.fromGeojsonVt({ 'mapillary-images': f }, { version: 2 });
           callback(null, p, null, null);
       }      
   });
