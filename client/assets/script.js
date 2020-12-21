@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 
 //#region custom source branch
-import "../dist/mapbox-gl.js";
+import "../maplibre/mapbox-gl.js";
 window.maplibre = mapboxgl;
 import "../utils/dist/utils.js";
 //#endregion
