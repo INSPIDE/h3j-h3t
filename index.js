@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 const
+    lib = globalThis.maplibre || globalThis.mapboxgl,
     utils = {
         'tovt': require('geojson-vt'),
         'togeojson': require('@mapbox/vt2geojson'),
@@ -7,7 +8,7 @@ const
         'h3': require('h3-js')
     },
     h3tsource = o => {
-        o.lib.addProtocol('h3t', (params, callback) => {
+        lib.addProtocol('h3t', (params, callback) => {
             console.time(params.url);
             const
                 s = params.url.split(/\/|\./i),
@@ -22,6 +23,7 @@ const
                     callback(null, null, null, null);
                 } else {
                     gj.features = gj.features.map(f => {
+                        //TODO: todo lo de h3
                         f.properties.touched = 1;
                         return f;
                     });
@@ -42,6 +44,4 @@ const
         o.map.addSource(o.sourcename, o.sourceoptions);
     };
 
-lib.Map.prototype.addH3Layer = h3tsource
-
-module.exports = h3tsource; 
+lib.Map.prototype.addH3Source = h3tsource;
