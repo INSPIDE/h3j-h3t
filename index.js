@@ -42,4 +42,6 @@ const
         o.map.addSource(o.sourcename, o.sourceoptions);
     };
 
+lib.Map.prototype.addH3Layer = h3tsource
+
 module.exports = h3tsource; 
