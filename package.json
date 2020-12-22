@@ -1,6 +1,11 @@
 {
     "name": "h3t",
     "version": "0.0.1",
+    "author": {
+        "name": "Abel Vázquez Montoro",
+        "email": "abel.vm@inspide.com",
+        "url": "https://www.inspide.com"
+    },
     "main": "index.js",
     "private": true,
     "devDependencies": {
