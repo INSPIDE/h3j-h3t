@@ -3,18 +3,15 @@
 //#region custom source branch
 import "../maplibre/mapbox-gl.js";
 window.maplibre = mapboxgl;
-import "../utils/dist/utils.js";
+import "../dist/h3t.js";
 //#endregion
 
 maplibre.addProtocol("h3t", (params, callback) => {
-  /* console.log(`https://${params.url.split("://")[1]}`); */
   const 
-    zxy = params.url.split('/'),
-    l = zxy.length,
-    z = zxy[l-3] * 1,
-    x = zxy[l-2] * 1,
-    y = zxy[l-1].split('.')[0] * 1;
-  utils.togeojson({
+    s = params.url.split(/\/|\./i),
+    l = s.length,
+    zxy = s.slice(l-4, l-1).map(s => s * 1);
+  h3t.togeojson({
       uri: `https://${params.url.split("://")[1]}`,
       layer: 'mapillary-images'
   }, function (e, gj) {
@@ -27,9 +24,9 @@ maplibre.addProtocol("h3t", (params, callback) => {
           return f;
         });
         const 
-          vt = utils.tovt(gj),
-          f = vt.getTile(z, x, y),
-          p = utils.topbf.fromGeojsonVt({ 'mapillary-images': f }, { version: 2 });
+          vt = h3t.tovt(gj),
+          f = vt.getTile(...zxy),
+          p = h3t.topbf.fromGeojsonVt({ 'mapillary-images': f }, { version: 2 });
           callback(null, p, null, null);
       }      
   });
@@ -74,7 +71,7 @@ map.on("load", () => {
     source: "test-source",
     "source-layer": "mapillary-images",
     paint: {
-      "circle-radius": 10,
+      "circle-radius": 5,
       "circle-color":  [
         'match',
         ['get', 'touched'],        
