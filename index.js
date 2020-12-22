@@ -9,18 +9,21 @@ const
     },
     h3tsource = o => {
         lib.addProtocol('h3t', (params, callback) => {
-            console.time(params.url);
+            !!o.debug && console.time(params.url);
             const
+                u = `https://${params.url.split('://')[1]}`,
+                h = o.h3field || 'h3_id',
                 s = params.url.split(/\/|\./i),
                 l = s.length,
                 zxy = s.slice(l - 4, l - 1).map(s => s * 1);
             utils.togeojson({
-                uri: `https://${params.url.split('://')[1]}`,
+                uri: u,
                 layer: o.sourcelayer
             }, function (e, gj) {
                 if (e) throw e;
                 if (gj.features.length === 0) {
                     callback(null, null, null, null);
+                    !!o.debug && console.warn(`Tile empty (${u})`);
                 } else {
                     gj.features = gj.features.map(f => {
                         //TODO: todo lo de h3
@@ -43,7 +46,7 @@ const
                         );
                     callback(null, p, null, null);
                 }
-                console.timeEnd(params.url);
+                !!o.debug && console.timeEnd(params.url);
             });
         });
         o.map.addSource(o.sourcename, o.sourceoptions);

@@ -18,15 +18,18 @@ map.on('load', () => {
 
   map.addH3Source({
     'map': map,
+    'h3field': 'h3_id',
     'sourcename': 'test-source',
     'sourcelayer': 'mapillary-images',
     'sourceoptions': {
       'type': 'vector',
+      // 'tiles': ['h3t://portall-api.inspide.com/v0/indicators/h3/{z}/{x}/{y}.mvt'],
       'tiles': ['h3t://tiles3.mapillary.com/v0.1/{z}/{x}/{y}.mvt'],
       'format': 'pbf',
       'minzoom': 14,
       'maxzoom': 14
-    }
+    },
+    'debug': true
   });
 
   map.addLayer({
