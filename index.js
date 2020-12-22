@@ -9,8 +9,8 @@ const
     },
     h3tsource = o => {
         lib.addProtocol('h3t', (params, callback) => {
-            !!o.debug && console.time(params.url);
             const
+                t = performance.now(),
                 u = `https://${params.url.split('://')[1]}`,
                 h = o.h3field || 'h3_id',
                 s = params.url.split(/\/|\./i),
@@ -23,7 +23,7 @@ const
                 if (e) throw e;
                 if (gj.features.length === 0) {
                     callback(null, null, null, null);
-                    !!o.debug && console.warn(`Tile empty (${u})`);
+                    !!o.debug && console.warn(`${u}: Empty`);
                 } else {
                     gj.features = gj.features.map(f => {
                         //TODO: todo lo de h3
@@ -38,15 +38,15 @@ const
                     const
                         f = utils.tovt(gj).getTile(...zxy),
                         fo = {};
-                    fo[o['sourcelayer']] = f;
+                    fo[o.sourcelayer] = f;
                     const
                         p = utils.topbf.fromGeojsonVt(
                             fo,
                             { 'version': 2 }
                         );
                     callback(null, p, null, null);
+                    !!o.debug && console.log(`${u}: ${gj.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
                 }
-                !!o.debug && console.timeEnd(params.url);
             });
         });
         o.map.addSource(o.sourcename, o.sourceoptions);
