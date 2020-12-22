@@ -34,10 +34,14 @@ map.on('load', () => {
 
   map.addLayer({
     'id': 'test-layer',
-    'type': 'circle',
+    'type': 'fill',
     'source': 'test-source',
     'source-layer': 'mapillary-images',
-    'paint': {
+    'paint':  {
+      'fill-color': '#f00',
+      'fill-opacity': 0.4
+    }
+     /* {
       'circle-radius': 3,
       'circle-color': [
         'match',
@@ -46,7 +50,7 @@ map.on('load', () => {
         '#f00',
         '#000'
       ]
-    }
+    } */
   });
 });
 

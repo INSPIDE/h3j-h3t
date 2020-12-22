@@ -27,14 +27,15 @@ const
                 } else {
                     gj.features = gj.features.map(f => {
                         //TODO: todo lo de h3
-                        /* const
+                         const
                             c = f.geometry.coordinates, 
-                            h = utils.h3.geoToH3(c[1], c[0], 11);  */
-                        f.properties.touched = 1;
-                        //f.geometry.type = 'Polygon';
-                        //f.geometry.coordinates = utils.h3.h3ToGeoBoundary(h);
+                            h = utils.h3.geoToH3(c[1], c[0], 12);  
+                        f.id = parseInt(h, 16);
+                        f.properties.h3 = h;
+                        f.geometry.type = 'Polygon';
+                        f.geometry.coordinates = [utils.h3.h3ToGeoBoundary(h, true)];
                         return f;
-                    });
+                    }); 
                     const
                         f = utils.tovt(gj).getTile(...zxy),
                         fo = {};
