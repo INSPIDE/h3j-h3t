@@ -19,6 +19,7 @@ map.on('load', () => {
   map.addH3Source({
     'map': map,
     'h3field': 'h3_id',
+    'https': true,
     'sourcename': 'test-source',
     'sourcelayer': 'mapillary-images',
     'sourceoptions': {
@@ -39,18 +40,8 @@ map.on('load', () => {
     'source-layer': 'mapillary-images',
     'paint':  {
       'fill-color': '#f00',
-      'fill-opacity': 0.4
+      'fill-opacity': 0.25
     }
-     /* {
-      'circle-radius': 3,
-      'circle-color': [
-        'match',
-        ['get', 'touched'],
-        1,
-        '#f00',
-        '#000'
-      ]
-    } */
   });
 });
 

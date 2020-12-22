@@ -11,7 +11,7 @@ const
         lib.addProtocol('h3t', (params, callback) => {
             const
                 t = performance.now(),
-                u = `https://${params.url.split('://')[1]}`,
+                u = `http${(o.https === false)?'':'s'}://${params.url.split('://')[1]}`,
                 h = o.h3field || 'h3_id',
                 s = params.url.split(/\/|\./i),
                 l = s.length,
