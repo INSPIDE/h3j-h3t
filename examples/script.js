@@ -9,9 +9,9 @@ const
     container: 'map',
     style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
     center: [-3.703793, 40.416687],
-    zoom: 14,
+    zoom: 16,
     minZoom: 14,
-    maxZoom: 14
+    maxZoom: 21
   });
 
 map.on('load', () => {

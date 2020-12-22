@@ -24,7 +24,12 @@ const
                 } else {
                     gj.features = gj.features.map(f => {
                         //TODO: todo lo de h3
+                        /* const
+                            c = f.geometry.coordinates, 
+                            h = utils.h3.geoToH3(c[1], c[0], 11);  */
                         f.properties.touched = 1;
+                        //f.geometry.type = 'Polygon';
+                        //f.geometry.coordinates = utils.h3.h3ToGeoBoundary(h);
                         return f;
                     });
                     const
