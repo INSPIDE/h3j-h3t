@@ -5,7 +5,7 @@
     "private": true,
     "devDependencies": {
         "browserify": "^17.0.0",
-        "uglify-js": "^3.12.2"
+        "terser": "^5.5.1"
     },
     "dependencies": {
         "@mapbox/vt2geojson": "^1.1.5",
@@ -14,6 +14,6 @@
         "vt-pbf": "^3.1.1"
     },
     "scripts": {
-        "build": "browserify index.js --standalone h3t | uglifyjs > dist/h3t.js"
+        "build": "browserify index.js --standalone h3t | terser -o dist/h3t.js"
     }
 }
