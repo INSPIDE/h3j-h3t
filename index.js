@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
-const
-  lib = globalThis.maplibre || globalThis.mapboxgl;
+const lib = globalThis.maplibre || globalThis.mapboxgl;
 const utils = {
   tovt: require('geojson-vt'),
   togeojson: require('@mapbox/vt2geojson'),
@@ -38,8 +37,7 @@ const h3tsource = (o) => {
           };
           return f;
         });
-        const
-          f = utils.tovt(g).getTile(...zxy);
+        const f = utils.tovt(g).getTile(...zxy);
         const fo = {};
         fo[o.sourcelayer] = f;
         const
