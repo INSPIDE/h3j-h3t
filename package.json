@@ -10,9 +10,6 @@
     "private": true,
     "devDependencies": {
         "browserify": "^17.0.0",
-        "eslint": "^7.16.0",
-        "eslint-config-airbnb-base": "^14.2.1",
-        "eslint-plugin-import": "^2.22.1",
         "terser": "^5.5.1"
     },
     "dependencies": {

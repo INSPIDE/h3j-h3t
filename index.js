@@ -24,19 +24,22 @@ const h3tsource = (o) => {
         callback(null, null, null, null);
         !!o.debug && console.warn(`${u}: Empty`);
       } else {
-        gj.features = gj.features.map((f) => {
-          // TODO: todo lo de h3
-          const
-            c = f.geometry.coordinates;
+        const g = Object.assign({}, gj);
+        g.features = gj.features.map((f) => {
+          const c = f.geometry.coordinates;
           const h = utils.h3.geoToH3(c[1], c[0], 12);
           f.id = parseInt(h, 16);
-          f.properties.h3 = h;
-          f.geometry.type = 'Polygon';
-          f.geometry.coordinates = [utils.h3.h3ToGeoBoundary(h, true)];
+          f.properties ={
+              h3: h
+          };
+          f.geometry = {
+            type: 'Polygon',
+            coordinates: [utils.h3.h3ToGeoBoundary(h, true)]
+          };
           return f;
         });
         const
-          f = utils.tovt(gj).getTile(...zxy);
+          f = utils.tovt(g).getTile(...zxy);
         const fo = {};
         fo[o.sourcelayer] = f;
         const
