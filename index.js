@@ -11,7 +11,7 @@ const h3tsource = (o) => {
   lib.addProtocol('h3t', (params, callback) => {
     const t = performance.now();
     const u = `http${(o.https === false) ? '' : 's'}://${params.url.split('://')[1]}`;
-    // const h3 = o.h3field || 'h3_id';
+    // const h3id = o.h3field || 'h3_id';
     const s = params.url.split(/\/|\./i);
     const l = s.length;
     const zxy = s.slice(l - 4, l - 1).map((k) => k * 1);
