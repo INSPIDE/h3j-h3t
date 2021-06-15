@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 
-import '../maplibre/mapbox-gl.js';
+import '../maplibre/maplibre-gl.js';
 import '../dist/h3t.js';
 
-const lib = globalThis.maplibre || globalThis.mapboxgl;
+const lib = globalThis.maplibregl;
 
 const config = {
   // portall-api.inspide.com/v0/indicators/h3/{z}/{x}/{y}.mvt

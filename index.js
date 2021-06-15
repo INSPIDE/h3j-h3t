@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-const lib = globalThis.maplibre || globalThis.mapboxgl;
+const lib = globalThis.maplibregl;
 const utils = {
   tovt: require('geojson-vt'),
   togeojson: require('@mapbox/vt2geojson'),
