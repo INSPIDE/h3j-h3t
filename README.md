@@ -1,6 +1,6 @@
 # H3T
 
-This module for [MapLibre GL](https://github.com/MapLibre/maplibre-gl-js) (or MapboxGL JS v1.x) allows to generate [H3](https://h3geo.org/) cells geometry clientside from tiled data and render and manage it later.
+This module for [MapLibre GL](https://github.com/MapLibre/maplibre-gl-js)  allows to generate [H3](https://h3geo.org/) cells geometry clientside from tiled compact data and render and manage it later.
 
 The H3 tiled data is served using `h3t://` protocol and it's designed for highest performance and lowest payload weight, while being as simplest as possible. Check [this document](SERVER.md) for more info on the tiles data format description and generation tutorial.
 
@@ -14,9 +14,7 @@ So, what about stripping the data to its bones and serving compact tuplas `h3ind
 
 ## Big Notice
 
-This library relies on [this MapLibre GL PR](https://github.com/maplibre/maplibre-gl-js/pull/30), that's been discussed in [this issue](https://github.com/maplibre/maplibre-gl-js/issues/29). So it's not supported by the main branch yet.
-
-This repo includes a bundled version of my fork for the 1.13-rc in the `maplibre` folder, where custom sources are available, so you can preview the feature that enables this module.
+This library relies on [this MapLibre GL PR](https://github.com/maplibre/maplibre-gl-js/pull/30), that's been discussed in [this issue](https://github.com/maplibre/maplibre-gl-js/issues/29). So it's not supported by the main branch yet. This repo includes a bundled version of the fork waiting to be merged in that PR.
 
 ## Install
 
@@ -69,7 +67,7 @@ map.on('load', () => {
 Parameters:
 | Param | Datatype |  Description | Default |
 |---|---|---|---|
-| map | object | `maplibre.Map` instance |  |
+| map | object | `maplibregl.Map` instance |  |
 | h3field | string | Name of the property that contains the H3 index |  |
 | https | booolean | Whether to request the tiles using SSL or not | true |
 | sourcename | string | The id to be assigned to the source |  |
