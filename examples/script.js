@@ -10,6 +10,9 @@ const config = {
   url: 'tiles3.mapillary.com/v0.1/{z}/{x}/{y}.mvt',
   sourcename: 'test-source',
   sourcelayer: 'mapillary-images',
+  newline: '\r\n', 
+  separator: '|', 
+  header:'h3_id|stop',
   h3field: 'h3_id'
 };
 
@@ -31,6 +34,8 @@ map.on('load', () => {
     sourcename: config.sourcename,
     sourcelayer: config.sourcelayer,
     sourceoptions: {
+      // TODO: promoteid
+      // https://github.com/mapbox/mapbox-gl-js/issues/2716
       type: 'vector',
       tiles: [`h3t://${config.url}`],
       format: 'pbf',

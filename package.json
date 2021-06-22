@@ -19,6 +19,6 @@
         "vt-pbf": "^3.1.1"
     },
     "scripts": {
-        "build": "browserify index.js --standalone h3t | terser -c -m --source-map -o dist/h3t.js"
+        "build": "mkdir -p dist && browserify src/index.js --standalone h3t | terser -c -m --source-map -o dist/h3t.js"
     }
 }

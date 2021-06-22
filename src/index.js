@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+/* jshint esversion: 9 */
 const lib = globalThis.maplibregl;
 const utils = {
   tovt: require('geojson-vt'),
@@ -6,6 +6,7 @@ const utils = {
   topbf: require('vt-pbf'),
   h3: require('h3-js'),
 };
+
 const h3tsource = (o) => {
   lib.addProtocol('h3t', (params, callback) => {
     const t = performance.now();
@@ -14,6 +15,11 @@ const h3tsource = (o) => {
     const s = params.url.split(/\/|\./i);
     const l = s.length;
     const zxy = s.slice(l - 4, l - 1).map((k) => k * 1);
+
+
+
+
+
     utils.togeojson({
       uri: u,
       layer: o.sourcelayer,
@@ -32,8 +38,8 @@ const h3tsource = (o) => {
               h3: h
           };
           f.geometry = {
-            type: 'Polygon',
-            coordinates: [utils.h3.h3ToGeoBoundary(h, true)]
+            "type": 'Polygon',
+            "coordinates": [utils.h3.h3ToGeoBoundary(h, true)]
           };
           return f;
         });
@@ -43,7 +49,7 @@ const h3tsource = (o) => {
         const
           p = utils.topbf.fromGeojsonVt(
             fo,
-            { version: 2 }
+            { "version": 2 }
           );
         callback(null, p, null, null);
         !!o.debug && console.log(`${u}: ${gj.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
