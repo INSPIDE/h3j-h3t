@@ -27,7 +27,7 @@ const map = new lib.Map({
 
 map.on('load', () => {
 
-  map.addH3Source({
+  map.addH3TSource({
     map: map,
     h3field: config.h3field,
     https: true,

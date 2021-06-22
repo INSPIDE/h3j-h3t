@@ -1,3 +1,5 @@
+test_*.*
+maplibre/
 # Logs
 logs
 *.log

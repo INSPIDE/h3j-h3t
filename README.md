@@ -1,20 +1,23 @@
 # H3T
+### Tiled H3 data for clientside geometry generation
 
-This module for [MapLibre GL](https://github.com/MapLibre/maplibre-gl-js)  allows to generate [H3](https://h3geo.org/) cells geometry clientside from tiled compact data and render and manage it later.
+This module for [MapLibre GL](https://github.com/MapLibre/maplibre-gl-js) (starting with `v1.14.1-rc.2`) allows to generate [H3](https://h3geo.org/) cells geometry clientside from tiled compact data and render and manage them later.
 
 The H3 tiled data is served using `h3t://` protocol and it's designed for highest performance and lowest payload weight, while being as simplest as possible. Check [this document](SERVER.md) for more info on the tiles data format description and generation tutorial.
 
 ## Why?
 
-Because we have a huge amount of stored data where the geometry is implicitly represented by its H3 index, and it makes no sense to waste time and resources generating and sending the geometries downstream to the client.
+Because we have a huge amount of stored data where the geometry is implicitly represented by its H3 index, and it makes no sense to waste time and resources generating, storing and sending the geometries downstream to the client.
+
+## H3T approach
 
 So, what about stripping the data to its bones and serving compact tuplas `h3index,  field1, ..., fieldN` and generate the vectortiles clientside?
 
+So, our ol'pal `CSV` comes to the rescue. And helped by `gzip` or, even better, `brotli`, the resulting tiles are the tiniest!
+
+
+
 **Note:** MVT doesn't support features without geometry, so this format is not an option
-
-## Big Notice
-
-This library relies on [this MapLibre GL PR](https://github.com/maplibre/maplibre-gl-js/pull/30), that's been discussed in [this issue](https://github.com/maplibre/maplibre-gl-js/issues/29). So it's not supported by the main branch yet. This repo includes a bundled version of the fork waiting to be merged in that PR.
 
 ## Install
 
@@ -40,7 +43,7 @@ Once imported, you will find a new method in your `maplibre.Map` object: `addH3S
 ```javascript
 map.on('load', () => {
 
-    map.addH3Source({
+    map.addH3TSource({
         'map': map,
         'h3field': 'h3id',
         'sourcename': 'test-source',
@@ -64,15 +67,21 @@ map.on('load', () => {
 
 });
 ```
+
 Parameters:
 | Param | Datatype |  Description | Default |
 |---|---|---|---|
-| map | object | `maplibregl.Map` instance |  |
+| geometry_type | string | Geometry type at the output. Possible values are: `Polygon` (hex cells) and `Point` (cells centroids) | `Polygon` |
 | h3field | string | Name of the property that contains the H3 index |  |
-| https | booolean | Whether to request the tiles using SSL or not | true |
+| promoteId | boolean | Whether to use the H3 index as unique feature ID (default) or generate a `bigint` one based on that index. Default is faster and OGC compliant, but taking into account [this issue](https://github.com/mapbox/mapbox-gl-js/issues/10257) you might want to set it to false depending on your use case| `true` |
+| newline | string | New line character(s) | `\n` |
+| separator | string | Field separator character(s) | `,` |
+| header | string[ ] | Array of the fields in the incoming data. Only needed if the CSV-like tiles are headless | `[ ]` |
+| https | booolean | Whether to request the tiles using SSL or not | `true` |
+| map | object | `maplibregl.Map` instance |  |
 | sourcename | string | The id to be assigned to the source |  |
 | sourcelayer | string | The name of the layer within the vector tile that will be renderized |  |
 | sourceoptions | object | The same options that expects [Map.addSource](https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addsource) for `vector` sources, while the `tiles` parameter should contain a `h3t://...` URL |  |
-| debug | boolean | Whether to send to console some metrics per tile | false |
+| debug | boolean | Whether to send to console some metrics per tile | `false` |
 
 You can check a working example in the `examples` folder
