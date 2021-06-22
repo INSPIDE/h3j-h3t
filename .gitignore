@@ -1,6 +1,7 @@
 test_*.*
 maplibre/
 dist/
+
 # Logs
 logs
 *.log

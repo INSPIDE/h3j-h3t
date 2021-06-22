@@ -40,7 +40,7 @@ const tileparser = (tile, options) => {
 };
 const h3tsource = options => {
   const o = Object.assign({}, defaults, options);
-  o.generate = (o.geometry_type === 'Polygon') ? h3id => utils.h3.h3ToGeoBoundary(h3id, true) : h3id => utils.h3.h3ToGeo(h3id).reverse();
+  o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
   if(!!o.promoteID) o.sourceoptions.promoteId = o.h3field;
   lib.addProtocol('h3t', (params, callback) => {
     const t = performance.now();
@@ -69,7 +69,7 @@ const h3tsource = options => {
             "properties": j,
             "geometry": {
               "type": o.geometry_type,
-              "coordinates": o.generate(j.h3_id)]
+              "coordinates": o.generate(j.h3_id)
             }
           };
           if(!!!o.promoteID) feature.id = parseInt(j.h3_id, 16);
@@ -93,7 +93,8 @@ const h3tsource = options => {
         console.error(e.message);
       });
   });
-  o.map.addSource(o.sourcename, o.sourceoptions);
+  //o.map.addSource(o.sourcename, o.sourceoptions);
+  this.addSource(o.sourcename, o.sourceoptions);
 };
 
 lib.Map.prototype.addH3TSource = h3tsource;
