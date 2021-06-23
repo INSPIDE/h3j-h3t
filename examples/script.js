@@ -27,32 +27,26 @@ const map = new lib.Map({
 
 map.on('load', () => {
 
-  map.addH3TSource({
-    map: map,
-    h3field: config.h3field,
-    https: true,
-    sourcename: config.sourcename,
-    sourcelayer: config.sourcelayer,
-    sourceoptions: {
-      // TODO: promoteid
-      // https://github.com/mapbox/mapbox-gl-js/issues/2716
-      type: 'vector',
-      tiles: [`h3t://${config.url}`],
-      format: 'pbf',
-      minzoom: 14,
-      maxzoom: 14,
-    },
-    debug: true,
-  });
+  map.addH3TSource(
+    config.sourcename, 
+    {
+      "h3field": config.h3field,
+      "sourcelayer": config.sourcelayer,
+      "tiles": [`h3t://${config.url}`],
+      "minzoom": 14,
+      "maxzoom": 14,
+      "debug": true
+    }
+  );
 
   map.addLayer({
-    id: 'test-layer',
-    type: 'fill',
-    source: config.sourcename,
-    'source-layer': config.sourcelayer,
-    paint: {
-      'fill-color': '#f00',
-      'fill-opacity': 0.25,
+    "id": 'test-layer',
+    "type": 'fill',
+    "source": config.sourcename,
+    "source-layer": config.sourcelayer,
+    "paint": {
+      "fill-color": '#f00',
+      "fill-opacity": 0.25,
     },
   });
 

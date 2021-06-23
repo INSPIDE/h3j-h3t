@@ -1,4 +1,13 @@
 /* jshint esversion: 9 */
+
+/*
+
+  TODO:
+
+  * ...
+
+*/
+
 const lib = globalThis.maplibregl;
 const utils = {
   tovt: require('geojson-vt'),
@@ -11,7 +20,10 @@ const defaults ={
   "debug": false,
   "newline": '\n', 
   "separator": ',',
-  "promoteId": true
+  "promoteId": true,
+  "type": 'vector',
+  "format": 'pbf',
+  "https": true
 };
 const csv2json = (csv, newline, separator, header) => {
   const lines = csv.split(newline);
@@ -38,10 +50,10 @@ const tileparser = (tile, options) => {
     resolve(csv2json(tile, options.newline, options.separator, options.header));
   });
 };
-const h3tsource = options => {
+const h3tsource = (name, options) => {
   const o = Object.assign({}, defaults, options);
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
-  if(!!o.promoteID) o.sourceoptions.promoteId = o.h3field;
+  if(!!o.promoteId) o.promoteId = o.h3field;
   lib.addProtocol('h3t', (params, callback) => {
     const t = performance.now();
     const u = `http${(o.https === false) ? '' : 's'}://${params.url.split('://')[1]}`;
@@ -94,7 +106,7 @@ const h3tsource = options => {
       });
   });
   //o.map.addSource(o.sourcename, o.sourceoptions);
-  this.addSource(o.sourcename, o.sourceoptions);
+  this.addSource(name, o);
 };
 
 lib.Map.prototype.addH3TSource = h3tsource;
