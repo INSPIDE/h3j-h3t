@@ -44,7 +44,7 @@ const h3tsource = (name, options) => {
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
   if(!!o.promoteId) o.promoteId = o.h3field;
   
-  lib.addProtocol('h3t', (params, callback) => {
+  lib.addProtocol('h3tiles', (params, callback) => {
     const t = performance.now();
     const u = `http${(o.https === false) ? '' : 's'}://${params.url.split('://')[1]}`;
     const s = params.url.split(/\/|\./i);
