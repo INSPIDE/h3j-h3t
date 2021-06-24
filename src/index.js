@@ -22,10 +22,10 @@ const j2g = (js, o) => {
       "properties": j,
       "geometry": {
         "type": o.geometry_type,
-        "coordinates": o.generate(j.h3_id)
+        "coordinates": o.generate(j.h3id)
       }
     };
-    if (!!!o.promoteID) feature.id = parseInt(j.h3_id, 16);
+    if (!!!o.promoteID) feature.id = parseInt(j.h3id, 16);
     return feature;
   });
   return { "type": 'FeatureCollection', "features": fs };
@@ -59,7 +59,7 @@ const filterObject = (obj, callback) => {
 const h3tsource = function(name, options) {
   const o = Object.assign({}, defaults, options, { "type": 'vector', "format": 'pbf' });
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
-  if (!!o.promoteId) o.promoteId = o.h3field;
+  if (!!o.promoteId) o.promoteId = 'h3id';
   lib.addProtocol('h3tiles', (params, callback) => {
     const u = `http${(o.https === false) ? '' : 's'}://${params.url.split('://')[1]}`;
     const s = params.url.split(/\/|\./i);
@@ -115,7 +115,7 @@ const h3jsource = function (name, options) {
   const o = Object.assign({}, defaults, options, { "type": 'geojson' });
   let t;
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
-  if (!!o.promoteId) o.promoteId = o.h3field;
+  if (!!o.promoteId) o.promoteId = 'h3id';
   if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
   if (typeof o.data === 'string') {
     if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
@@ -161,7 +161,7 @@ lib.Map.prototype.addH3JSource = h3jsource;
 const h3jsetdata = function (name, data, options) {
   const o = Object.assign({}, defaults, options);
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
-  if (!!o.promoteId) o.promoteId = o.h3field;
+  if (!!o.promoteId) o.promoteId = 'h3id';
   const controller = new AbortController();
   const signal = controller.signal;
   const s = this.getSource(name);

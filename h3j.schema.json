@@ -1,0 +1,37 @@
+{
+    "$id": "https://inspide.com/h3j.schema.json",
+    "$schema": "http://json-schema.org/draft/2020-12/schema#",
+    "$ref": "#/definitions/H3J",
+    "title": "H3J",
+    "description": "A compact way to deliver H3 data",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "metadata": {
+            "type": "object"
+        },
+        "cells": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/cell"
+            }
+        }
+    },
+    "required": [
+        "cells"
+    ],
+    "$defs": {
+        "cell":{
+            "type": "object",
+            "properties": {
+                "h3id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "h3id"
+            ],
+            "additionalProperties": {}
+        }
+    }
+}

@@ -1,27 +1,71 @@
-# H3T
-### Tiled H3 data for clientside geometry generation
+# H3J / H3T
+### Light H3 data formats for client side geometry generation and rendering
 
-This module for [MapLibre GL](https://github.com/MapLibre/maplibre-gl-js) (starting with `v1.14.1-rc.2`) allows to generate [H3](https://h3geo.org/) cells geometry clientside from tiled compact data and render and manage them later.
 
-The H3 tiled data is served using `h3t://` protocol and it's designed for highest performance and lowest payload weight, while being as simplest as possible. Check [this document](SERVER.md) for more info on the tiles data format description and generation tutorial.
 
 ## Why?
 
-Because we have a huge amount of stored data where the geometry is implicitly represented by its H3 index, and it makes no sense to waste time and resources generating, storing and sending the geometries downstream to the client.
+Because we, at [Inspide](www.inspide.com), generate a huge amount of spatial data where the geometry is implicitly represented by its H3 index, and it makes no sense to waste time and resources generating, storing and sending the geometries downstream to the client.
 
-## H3T approach
+## The format
 
-So, what about stripping the data to its bones and serving compact tuplas `h3index,  field1, ..., fieldN` and generate the vectortiles clientside?
+The first approach was to strip the data down to the bones and re-use vectortiles without geometries, processing the features `after` rendering. But (uppercase bold `but`), vectortiles specification drops the features with no geometry. So... back to the drawing table.
 
-So, our ol'pal `CSV` comes to the rescue. And helped by `gzip` or, even better, `brotli`, the resulting tiles are the tiniest!
+What about a headless CSVy format? It should be the most compact ascii format, but... If you send CSVy data and want to render it in a MapLibreGL map, you need to parse it into GeoJSON first, and parsing huge CSVs into JSON objects can be quite time consuming. And, on the other hand, once `gzip` or `brotli` is involved, the lack of text redundancy has no impact in the size of the file.
 
+And what about [PBF](https://developers.google.com/protocol-buffers)y the data? Then you'll need to PBFy it at the server and then de-PBFy it at client side to process it... so again, no gain at all.
 
+So, say hello to **H3J** and its cousin **H3T** (tiled H3J) :wave:
 
-**Note:** MVT doesn't support features without geometry, so this format is not an option
+```javascript
+{
+    "metadata": {
+        ...
+    },
+    "cells":[
+        {
+        	"h3id":  '8c390cb1bcdb400',
+            "property_1": 0,
+            "property_2": 'potato'
+        },
+        {
+            ...
+        },
+        {
+        	"h3id": '8c390cb1bcdb800',
+            "property_1": 1,
+            "property_2": 'tomato'
+        }
+    ]
+}
+```
 
-## Install
+So, `H3J`:
 
-First of all
+* It's a JSON format
+* It has a root `cells` property which is an array of
+* `cell` which is an object with arbitrary properties, 
+   * but the compulsory **`h3id`** property, which is the hexadecimal representation of the H3 index of that cell
+* Future proof! It might be extended with custom properties within `metadata` (optional) and be managed client side 
+
+You can find the [JSON schema](https://json-schema.org/) for `H3J` [**here**](h3j.schema.json).
+
+Let's compare file sizes with raw GeoJSON:
+|  | sample 1 | sample 2 |
+|---|---|---|
+|# features|4938| 2477|
+|geojson (kb)|1800|884|
+|h3j (kb)|252|127|
+|geojson gzipped (kb)|216|109|
+|h3j gzipped (kb)|23|12|
+
+And `H3T`? Same format, but is served using a ZXY endpoint and each `.../z/x/y.h3t` file contains all the H3 cells that fall within the linked [quadkey tile](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system).
+
+## The MapLibreGL module
+
+This module for [MapLibre GL](https://github.com/MapLibre/maplibre-gl-js) (starting with `v1.14.1-rc.2`) allows to generate [H3](https://h3geo.org/) cells geometry client side from compact data and render & manage them there.
+
+Now that you wanna use it... First of all
 
 `yarn install`
 
@@ -33,68 +77,83 @@ If you want an UMD bundle, you need to build it first
 
 `yarn build`
 
-Then you can just impor it in your JS code:
+Then you can just import it in your JS code:
 
 `import 'dist/h3t.js';`
-## How to
 
-Once imported, you will find a new method in your `maplibre.Map` object: `addH3Source` that you can use like:
+## Now what
 
+Once imported, you will find three new methods in your `maplibregl.Map` object: 
+
+### addH3JSource(source_name, source_options)
+
+Adds a `GeoJSONSource` and load `H3J` data, all at once. Returns the `maplibregl.Map`  instance as a promise.
 ```javascript
-map.on('load', () => {
-
-    map.addH3TSource({
-        'map': map,
-        'h3field': 'h3id',
-        'sourcename': 'test-source',
-        'sourcelayer': 'test-source-layer',
-        'sourceoptions': {
-            'type': 'vector',
-            'tiles': ['h3t://server.test/{z}/{x}/{y}.h3t']
-        }
-    });
-
-    map.addLayer({
-        'id': 'test-layer',
-        'type': 'fill',
-        'source': 'test-source',
-        'source-layer': 'test-source-layer',
-        'paint':  {
-        'fill-color': '#f00',
-        'fill-opacity': 0.25
-        }
-    });
-
-});
+map.addH3JSource(
+    'h3j_testsource',
+    {
+      "data": 'data/sample_1.h3j'
+    }
+  )
 ```
-
-Parameters:
+Source options:
 | Param | Datatype |  Description | Default |
 |---|---|---|---|
-
-
-
-
-
 | geometry_type | string | Geometry type at the output. Possible values are: `Polygon` (hex cells) and `Point` (cells centroids) | `Polygon` |
-| h3field | string | Name of the property that contains the H3 index |  |
 | promoteId | boolean | Whether to use the H3 index as unique feature ID (default) or generate a `bigint` one based on that index. Default is faster and OGC compliant, but taking into account [this issue](https://github.com/mapbox/mapbox-gl-js/issues/10257) you might want to set it to false depending on your use case| `true` |
 | https | booolean | Whether to request the tiles using SSL or not | `true` |
-| sourcename | string | The id to be assigned to the source |  |
+| data | string / object | URL to retrieve the `H3J` file or inlined `H3J` object |  |
+| ... | any | The same options that expects [Map.addSource](https://maplibre.org/maplibre-gl-js-docs/api/sources/#geojsonsource) for `geojson` sources |  |
+| debug | boolean | Whether to send to console some metrics | `false` |
+
+### setH3JData(sourcename, data, [sourceoptions])
+
+This method allows the user change the data rendered in any `GeoJSONSource` with data from an `H3J` inlined object or URL
+
+```javascript
+map.setH3JData('h3j_testsource','data/sample_2.h3j');
+```
+Source options:
+| Param | Datatype |  Description | Default |
+|---|---|---|---|
+| geometry_type | string | Geometry type at the output. Possible values are: `Polygon` (hex cells) and `Point` (cells centroids) | `Polygon` |
+| promoteId | boolean | Whether to use the H3 index as unique feature ID (default) or generate a `bigint` one based on that index. Default is faster and OGC compliant, but taking into account [this issue](https://github.com/mapbox/mapbox-gl-js/issues/10257) you might want to set it to false depending on your use case| `true` |
+| https | booolean | Whether to request the tiles using SSL or not | `true` |
+| ... | any | The same options that expects [Map.addSource](https://maplibre.org/maplibre-gl-js-docs/api/sources/#geojsonsource) for `geojson` sources |  |
+| debug | boolean | Whether to send to console some metrics | `false` |
+
+
+### addH3TSource(name, sourceoptions)
+
+This method registers a [custom protocol](https://github.com/maplibre/maplibre-gl-js/pull/30) for `h3tiles://`  and adds a `VectorTileSource` that feeds on an `.../z/x/y.h3t` endpoint. Returns the `maplibregl.Map`  instance as a promise.
+
+```javascript
+map.addH3TSource(
+    'h3j_testsource',
+    {
+      "tiles": ['h3tiles://example.com/z/x/y.h3t']
+    }
+  )
+```
+
+Source options:
+| Param | Datatype |  Description | Default |
+|---|---|---|---|
+| geometry_type | string | Geometry type at the output. Possible values are: `Polygon` (hex cells) and `Point` (cells centroids) | `Polygon` |
+| promoteId | boolean | Whether to use the H3 index as unique feature ID (default) or generate a `bigint` one based on that index. Default is faster and OGC compliant, but taking into account [this issue](https://github.com/mapbox/mapbox-gl-js/issues/10257) you might want to set it to false depending on your use case| `true` |
+| https | booolean | Whether to request the tiles using SSL or not | `true` |
 | sourcelayer | string | The name of the layer within the vector tile that will be renderized |  |
-| sourceoptions | object | The same options that expects [Map.addSource](https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addsource) for `vector` sources, while the `tiles` parameter should contain a `h3t://...` URL |  |
+| tiles | [text] | URL of the `H3T` endpoint, using `h3tiles://` protocol | |
+| ... | any | The same options that expects [Map.addSource](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#addsource) for `vector` sources |  |
 | debug | boolean | Whether to send to console some metrics per tile | `false` |
 
-You can check a working example in the `examples` folder
+## Benchmarks
 
-## benchmarks
+Average overhead time of using `H3J` instead of loading an ol'GeoJSON. For 100 runs of `setH3JData`:
 
 
-|  | sample 1 | sample 2 |
+| H3JS | sample 1 | sample 2 |
 |---|---|---|
 |# features|4938| 2477|
-|geojson (kb)|1800|884|
-|h3j (kb)|252|127|
-|geojson gzip (kb)|216|109|
-|h3j gzip (kb)|23|12|
 |overhead (ms)|68|37|
+

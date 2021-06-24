@@ -18,7 +18,6 @@ map.on('load', e => {
   map.addH3JSource(
     'h3j_testsource',
     {
-      "h3field": 'h3_id',
       "data": 'data/sample_1.h3j',
       "debug": true
     }
