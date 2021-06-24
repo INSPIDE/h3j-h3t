@@ -28,7 +28,7 @@ const j2g = (js, o) => {
     if (!!!o.promoteID) feature.id = parseInt(j.h3_id, 16);
     return feature;
   });
-  return { "type": "FeatureCollection", "features": fs };
+  return { "type": 'FeatureCollection', "features": fs };
 };
 const tileparser = (tile, options) => {
   return new Promise((resolve, reject) => {
@@ -37,7 +37,12 @@ const tileparser = (tile, options) => {
 };
 const gjclean = gj => {
   // https://github.com/mapbox/mapbox-gl-js/blob/a8bfbfdb988831abe8ecb74bea19f5dc0086513a/src/style-spec/types.js#L135
-  const valid = ["type", "data", "maxzoom", "attribution", "buffer", "filter", "tolerance", "cluster", "clusterRadius", "clusterMaxZoom", "clusterMinPoints", "clusterProperties", "lineMetrics", "generateId", "promoteId"];
+  const valid = ['type', 'data', 'maxzoom', 'attribution', 'buffer', 'filter', 'tolerance', 'cluster', 'clusterRadius', 'clusterMaxZoom', 'clusterMinPoints', 'clusterProperties', 'lineMetrics', 'generateId', 'promoteId'];
+  return filterObject(gj, (k, v) => valid.includes(k));
+};
+const vtclean = vt => {
+  // https://github.com/mapbox/mapbox-gl-js/blob/a8bfbfdb988831abe8ecb74bea19f5dc0086513a/src/style-spec/types.js#L96
+  const valid = ['type','url','tiles','bounds','scheme','minzoom','maxzoom','attribution','promoteId','volatile'];
   return filterObject(gj, (k, v) => valid.includes(k));
 };
 const filterObject = (obj, callback) => {
@@ -95,7 +100,7 @@ const h3tsource = (name, options) => {
       });
   });
   //o.map.addSource(o.sourcename, o.sourceoptions);
-  this.addSource(name, o);
+  this.addSource(name, vtclean(o));
 };
 lib.Map.prototype.addH3TSource = h3tsource;
 
