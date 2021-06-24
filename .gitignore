@@ -1,6 +1,6 @@
 test_*.*
 maplibre
-dist/
+dist
 
 # Logs
 logs
