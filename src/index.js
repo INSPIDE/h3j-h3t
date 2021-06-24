@@ -117,34 +117,34 @@ const h3jsource = (name, options) => {
   if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
   if (typeof o.data === 'string') {
     if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
-    fetch(o.data, { signal })
-      .then(r => {
-        if (r.ok) {
-          return r.json();
-        } else {
-          throw new Error(r.statusText);
-        }
-      })
-      .then(js => tileparser(js, o))
-      .then(g => {
-        o.data = g;
-        //console.log(gjclean(o));
-        o.map.addSource(name, gjclean(o));
-        if (!!o.debug) console.log(`${g.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
-        console.log(o.map);
-        return new Promise((resolve, reject) => resolve(o.map));
-      })
-      .catch(e => {
-        if (e.name === 'AbortError') e.message = `Timeout: Source file ${o.data} is taking too long to fetch`;
-        console.error(e.message);
-      });
+    return new Promise((resolve, reject) => {
+      fetch(o.data, { signal })
+        .then(r => {
+          if (r.ok) {
+            return r.json();
+          } else {
+            throw new Error(r.statusText);
+          }
+        })
+        .then(js => tileparser(js, o))
+        .then(g => {
+          o.data = g;
+          o.map.addSource(name, gjclean(o));
+          if (!!o.debug) console.log(`${g.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
+          resolve(o.map); 
+        })
+        .catch(e => {
+          if (e.name === 'AbortError') e.message = `Timeout: Source file ${o.data} is taking too long to fetch`;
+          console.error(e.message);
+        });  
+    });  
   } else {
-    tileparser(o.data, o)
-      .then(g => {
-        o.data = g;
-        o.map.addSource(name, gjclean(o));
-        return new Promise((resolve, reject) => resolve(o.map));
-      });
+  tileparser(o.data, o)
+    .then(g => {
+      o.data = g;
+      o.map.addSource(name, gjclean(o));
+      return new Promise((resolve, reject) => resolve(o.map));
+    });
   }
 };
 lib.Map.prototype.addH3JSource = h3jsource;
@@ -155,15 +155,14 @@ lib.Map.prototype.addH3JSource = h3jsource;
   Update data in geojson/H3J layer
 
 */
-const h3jsetdata = (name, data) => {
+const h3jsetdata = (name, data, options) => {
+  const o = Object.assign({}, defaults, options);
+  o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
+  if (!!o.promoteId) o.promoteId = o.h3field;
   const t = performance.now();
   const controller = new AbortController();
   const signal = controller.signal;
-  const s = this.getSource(name);
-  const o = s._options;
-  //const o = Object.assign({}, defaults, options, {"type": 'geojson'});
-  //o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
-  //if(!!o.promoteId) o.promoteId = o.h3field;
+  const s = o.map.getSource(name);
   if (typeof data === 'string') {
     if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
     fetch(data, { signal })
@@ -176,8 +175,8 @@ const h3jsetdata = (name, data) => {
       })
       .then(js => tileparser(js, o))
       .then(g => {
-        this.getSource(name).setData(g);
-        if (!!o.debug) console.log(`${u}: ${g.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
+        s.setData(g);
+        if (!!o.debug) console.log(`${g.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
       })
       .catch(e => {
         if (e.name === 'AbortError') e.message = `Timeout: Data file ${data} is taking too long to fetch`;
@@ -185,7 +184,7 @@ const h3jsetdata = (name, data) => {
       });
   } else {
     tileparser(data, o)
-      .then(g => this.getSource(name).setData(g));
+      .then(g => s.setData(g));
   }
 };
 lib.Map.prototype.setH3JData = h3jsetdata;
