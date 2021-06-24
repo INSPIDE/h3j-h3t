@@ -78,7 +78,6 @@ Parameters:
 | separator | string | Field separator character(s) | `,` |
 | header | string[ ] | Array of the fields in the incoming data. Only needed if the CSV-like tiles are headless | `[ ]` |
 | https | booolean | Whether to request the tiles using SSL or not | `true` |
-| map | object | `maplibregl.Map` instance |  |
 | sourcename | string | The id to be assigned to the source |  |
 | sourcelayer | string | The name of the layer within the vector tile that will be renderized |  |
 | sourceoptions | object | The same options that expects [Map.addSource](https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addsource) for `vector` sources, while the `tiles` parameter should contain a `h3t://...` URL |  |
