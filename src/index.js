@@ -1,12 +1,14 @@
 /* jshint esversion: 9 */
 
+const { exactEdgeLength } = require('h3-js');
+
 const lib = globalThis.maplibregl;
 const utils = {
   tovt: require('geojson-vt'),
   topbf: require('vt-pbf'),
   h3: require('h3-js'),
 };
-const defaults ={
+const defaults = {
   "geometry_type": 'Polygon',
   "timeout": 0,
   "debug": false,
@@ -23,7 +25,7 @@ const j2g = (js, o) => {
         "coordinates": o.generate(j.h3_id)
       }
     };
-    if(!!!o.promoteID) feature.id = parseInt(j.h3_id, 16);
+    if (!!!o.promoteID) feature.id = parseInt(j.h3_id, 16);
     return feature;
   });
   return { "type": "FeatureCollection", "features": fs };
@@ -33,6 +35,16 @@ const tileparser = (tile, options) => {
     resolve(j2g(tile, options));
   });
 };
+const gjclean = gj => {
+  // https://github.com/mapbox/mapbox-gl-js/blob/a8bfbfdb988831abe8ecb74bea19f5dc0086513a/src/style-spec/types.js#L135
+  const valid = ["type", "data", "maxzoom", "attribution", "buffer", "filter", "tolerance", "cluster", "clusterRadius", "clusterMaxZoom", "clusterMinPoints", "clusterProperties", "lineMetrics", "generateId", "promoteId"];
+  return filterObject(gj, (k, v) => valid.includes(k));
+};
+const filterObject = (obj, callback) => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key, val]) => callback(key, val))
+  );
+};
 
 /*
 
@@ -40,10 +52,10 @@ const tileparser = (tile, options) => {
 
 */
 const h3tsource = (name, options) => {
-  const o = Object.assign({}, defaults, options, {"type": 'vector', "format": 'pbf'});
+  const o = Object.assign({}, defaults, options, { "type": 'vector', "format": 'pbf' });
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
-  if(!!o.promoteId) o.promoteId = o.h3field;
-  
+  if (!!o.promoteId) o.promoteId = o.h3field;
+
   lib.addProtocol('portall', (params, callback) => {
     const t = performance.now();
     const u = `http${(o.https === false) ? '' : 's'}://${params.url.split('://')[1]}`;
@@ -55,16 +67,15 @@ const h3tsource = (name, options) => {
 
     if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
 
-    fetch(u, {signal})
+    fetch(u, { signal })
       .then(r => {
         if (r.ok) {
-          return r.text();
+          return r.json();
         } else {
           throw new Error(r.statusText);
         }
       })
-      .then(t => t.json())
-      .then(js => tileparser(js))
+      .then(js => tileparser(js, o))
       .then(g => {
         const f = utils.tovt(g).getTile(...zxy);
         const fo = {};
@@ -93,34 +104,48 @@ lib.Map.prototype.addH3TSource = h3tsource;
 
   Custom geojson source
 
+  https://github.com/mapbox/mapbox-gl-js/blob/c377a90e768c48b7a422596740e06cae2a55a055/src/source/geojson_source.js#L66-L346
+
 */
 const h3jsource = (name, options) => {
   const t = performance.now();
   const controller = new AbortController();
   const signal = controller.signal;
-  const o = Object.assign({}, defaults, options, {"type": 'geojson'});
+  const o = Object.assign({}, defaults, options, { "type": 'geojson' });
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
-  if(!!o.promoteId) o.promoteId = o.h3field;
+  if (!!o.promoteId) o.promoteId = o.h3field;
   if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
-  fetch(u, {signal})
+  if (typeof o.data === 'string') {
+    if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
+    fetch(o.data, { signal })
       .then(r => {
         if (r.ok) {
-          return r.text();
+          return r.json();
         } else {
           throw new Error(r.statusText);
         }
       })
-      .then(t => t.json())
-      .then(js => tileparser(js))
+      .then(js => tileparser(js, o))
       .then(g => {
         o.data = g;
-        this.addSource(name, o);
-        if (!!o.debug) console.log(`${u}: ${g.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
+        //console.log(gjclean(o));
+        o.map.addSource(name, gjclean(o));
+        if (!!o.debug) console.log(`${g.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
+        console.log(o.map);
+        return new Promise((resolve, reject) => resolve(o.map));
       })
       .catch(e => {
-        if (e.name === 'AbortError') e.message = `Timeout: Tile ${u} is taking too long to fetch`;
+        if (e.name === 'AbortError') e.message = `Timeout: Source file ${o.data} is taking too long to fetch`;
         console.error(e.message);
-      });  
+      });
+  } else {
+    tileparser(o.data, o)
+      .then(g => {
+        o.data = g;
+        o.map.addSource(name, gjclean(o));
+        return new Promise((resolve, reject) => resolve(o.map));
+      });
+  }
 };
 lib.Map.prototype.addH3JSource = h3jsource;
 
@@ -139,29 +164,28 @@ const h3jsetdata = (name, data) => {
   //const o = Object.assign({}, defaults, options, {"type": 'geojson'});
   //o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
   //if(!!o.promoteId) o.promoteId = o.h3field;
-  if(typeof data === 'string'){
+  if (typeof data === 'string') {
     if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
-    fetch(u, {signal})
+    fetch(data, { signal })
       .then(r => {
         if (r.ok) {
-          return r.text();
+          return r.json();
         } else {
           throw new Error(r.statusText);
         }
       })
-      .then(t => t.json())
-      .then(js => tileparser(js))
+      .then(js => tileparser(js, o))
       .then(g => {
         this.getSource(name).setData(g);
         if (!!o.debug) console.log(`${u}: ${g.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
       })
       .catch(e => {
-        if (e.name === 'AbortError') e.message = `Timeout: Tile ${u} is taking too long to fetch`;
+        if (e.name === 'AbortError') e.message = `Timeout: Data file ${data} is taking too long to fetch`;
         console.error(e.message);
       });
-  }else{
-    tileparser(data)
-    .then(g => this.getSource(name).setData(g));
+  } else {
+    tileparser(data, o)
+      .then(g => this.getSource(name).setData(g));
   }
 };
 lib.Map.prototype.setH3JData = h3jsetdata;
