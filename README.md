@@ -96,3 +96,12 @@ You can check a working example in the `examples` folder
 1.h3j       252     23
 2.geojson   884     109
 2.h3j       127     12
+
+|  | sample 1 | sample 2 |
+|---|---|---|
+|# features|4938| 2477|
+|geojson (kb)|1800|884|
+|h3j kb)|252|127|
+|geojson gzip (kb)|216|109|
+|h3j gzip (kb)|23|12|
+|overhead (ms)|68|37|

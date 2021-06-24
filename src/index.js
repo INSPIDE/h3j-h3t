@@ -62,19 +62,20 @@ const h3tsource = (name, options) => {
   if (!!o.promoteId) o.promoteId = o.h3field;
 
   lib.addProtocol('portall', (params, callback) => {
-    const t = performance.now();
     const u = `http${(o.https === false) ? '' : 's'}://${params.url.split('://')[1]}`;
     const s = params.url.split(/\/|\./i);
     const l = s.length;
     const zxy = s.slice(l - 4, l - 1).map((k) => k * 1);
     const controller = new AbortController();
     const signal = controller.signal;
+    let t;
 
     if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
 
     fetch(u, { signal })
       .then(r => {
         if (r.ok) {
+          t = performance.now();
           return r.json();
         } else {
           throw new Error(r.statusText);
@@ -113,10 +114,10 @@ lib.Map.prototype.addH3TSource = h3tsource;
 
 */
 const h3jsource = (name, options) => {
-  const t = performance.now();
   const controller = new AbortController();
   const signal = controller.signal;
   const o = Object.assign({}, defaults, options, { "type": 'geojson' });
+  let t;
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
   if (!!o.promoteId) o.promoteId = o.h3field;
   if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
@@ -126,6 +127,7 @@ const h3jsource = (name, options) => {
       fetch(o.data, { signal })
         .then(r => {
           if (r.ok) {
+            t = performance.now();
             return r.json();
           } else {
             throw new Error(r.statusText);
@@ -164,15 +166,16 @@ const h3jsetdata = (name, data, options) => {
   const o = Object.assign({}, defaults, options);
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
   if (!!o.promoteId) o.promoteId = o.h3field;
-  const t = performance.now();
   const controller = new AbortController();
   const signal = controller.signal;
   const s = o.map.getSource(name);
+  let t;
   if (typeof data === 'string') {
     if (o.timeout > 0) setTimeout(() => controller.abort(), o.timeout);
     fetch(data, { signal })
       .then(r => {
         if (r.ok) {
+          t = performance.now();
           return r.json();
         } else {
           throw new Error(r.statusText);
