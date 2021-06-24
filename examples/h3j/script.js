@@ -33,7 +33,7 @@ map.on('load', e => {
     })
   );
 
-    // map.setH3JData('h3j_testsource','data/sample_2.h3j')
+    // map.setH3JData('h3j_testsource','data/sample_2.h3j', {"debug": true });
 
 
 });
