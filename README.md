@@ -88,14 +88,6 @@ You can check a working example in the `examples` folder
 
 ## benchmarks
 
-1: 4938 cells: 280ms
-2: 2477 cells: 51ms
-
-            raw    gzip
-1.geojson   1800    216
-1.h3j       252     23
-2.geojson   884     109
-2.h3j       127     12
 
 |  | sample 1 | sample 2 |
 |---|---|---|
