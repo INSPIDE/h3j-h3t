@@ -1,5 +1,5 @@
 test_*.*
-maplibre/
+maplibre
 dist/
 
 # Logs
