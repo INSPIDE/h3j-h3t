@@ -71,12 +71,14 @@ map.on('load', () => {
 Parameters:
 | Param | Datatype |  Description | Default |
 |---|---|---|---|
+
+
+
+
+
 | geometry_type | string | Geometry type at the output. Possible values are: `Polygon` (hex cells) and `Point` (cells centroids) | `Polygon` |
 | h3field | string | Name of the property that contains the H3 index |  |
 | promoteId | boolean | Whether to use the H3 index as unique feature ID (default) or generate a `bigint` one based on that index. Default is faster and OGC compliant, but taking into account [this issue](https://github.com/mapbox/mapbox-gl-js/issues/10257) you might want to set it to false depending on your use case| `true` |
-| newline | string | New line character(s) | `\n` |
-| separator | string | Field separator character(s) | `,` |
-| header | string[ ] | Array of the fields in the incoming data. Only needed if the CSV-like tiles are headless | `[ ]` |
 | https | booolean | Whether to request the tiles using SSL or not | `true` |
 | sourcename | string | The id to be assigned to the source |  |
 | sourcelayer | string | The name of the layer within the vector tile that will be renderized |  |

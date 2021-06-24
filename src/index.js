@@ -60,7 +60,7 @@ const h3tsource = function(name, options) {
   const o = Object.assign({}, defaults, options, { "type": 'vector', "format": 'pbf' });
   o.generate = (o.geometry_type === 'Polygon') ? h3id => [utils.h3.h3ToGeoBoundary(h3id, true)] : h3id => utils.h3.h3ToGeo(h3id).reverse();
   if (!!o.promoteId) o.promoteId = o.h3field;
-  lib.addProtocol('portall', (params, callback) => {
+  lib.addProtocol('h3tiles', (params, callback) => {
     const u = `http${(o.https === false) ? '' : 's'}://${params.url.split('://')[1]}`;
     const s = params.url.split(/\/|\./i);
     const l = s.length;
