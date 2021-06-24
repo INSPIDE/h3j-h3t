@@ -93,7 +93,7 @@ You can check a working example in the `examples` folder
 |---|---|---|
 |# features|4938| 2477|
 |geojson (kb)|1800|884|
-|h3j kb)|252|127|
+|h3j (kb)|252|127|
 |geojson gzip (kb)|216|109|
 |h3j gzip (kb)|23|12|
 |overhead (ms)|68|37|
