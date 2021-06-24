@@ -86,11 +86,10 @@ Parameters:
 
 You can check a working example in the `examples` folder
 
-
 ## benchmarks
 
-1: 4938 cells
-2: 2477 cells
+1: 4938 cells: 280ms
+2: 2477 cells: 51ms
 
             raw    gzip
 1.geojson   1800    216
