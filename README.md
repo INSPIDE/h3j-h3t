@@ -24,7 +24,7 @@ So, say hello to **H3J** and its cousin **H3T** (tiled H3J) :wave:
     },
     "cells":[
         {
-        	"h3id":  '8c390cb1bcdb400',
+            "h3id":  '8c390cb1bcdb400',
             "property_1": 0,
             "property_2": 'potato'
         },
@@ -32,7 +32,7 @@ So, say hello to **H3J** and its cousin **H3T** (tiled H3J) :wave:
             ...
         },
         {
-        	"h3id": '8c390cb1bcdb800',
+            "h3id": '8c390cb1bcdb800',
             "property_1": 1,
             "property_2": 'tomato'
         }
