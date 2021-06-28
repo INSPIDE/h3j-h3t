@@ -50,23 +50,26 @@ So, `H3J`:
 
 You can find the [JSON schema](https://json-schema.org/) for `H3J` [**here**](h3j.schema.json).
 
-Let's compare file sizes with raw GeoJSON:
+Let's compare file sizes with raw GeoJSON, using the included samples:
 |  | sample 1 | sample 2 |
 |---|---|---|
 |# features|4938| 2477|
-|geojson (kb)|1800|884|
-|h3j (kb)|252|127|
-|geojson gzipped (kb)|216|109|
-|h3j gzipped (kb)|23|12|
+|GeoJSON |1.8 MB |884 kB|
+|H3J|252 kB|127 kB|
+|GeoJSON, gzipped |216 kB|109 kB|
+|H3J, gzipped |23 kB|12 kB|
+
+**So `H3J` files are ~ 7 times smaller than GeoJSON, and up to ~ 10 times smaller if comparing gzipped files.** (Tested with 20 different data files)
 
 And `H3T`? Same format, but is served using a ZXY endpoint and each `.../z/x/y.h3t` file contains all the H3 cells that fall within the linked [quadkey tile](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system).
 
-Comparing the average (gzipped) tile size for zoom level 14, H3 levels 11 and 12 (10437 features per tile)
-| MVT |  H3T| 
-|---|---|
-| 206 kB| 34.6 kB|
+Comparing the average (gzipped) tile size for zoom level 14, H3 levels 11 and 12 (tested with 500 tiles, avg.: 10437 features each)
+| | MVT |  H3T|
+| --- |---|---|
+| raw | 3.4 MB | 419 kB |
+| gzipped | 206 kB| 34.6 kB|
 
-So `H3T` tiles are ~ 6 times smaller than [MVT](https://github.com/mapbox/vector-tile-spec).
+**So `H3T` tiles are ~ 6 times smaller than [MVT](https://github.com/mapbox/vector-tile-spec).**
 
 <!-- One of the side effects of `H3T` format is that **you can add object and array properties to your features!!** To do so using MVT you need to serialize the object server-side to add the info as a text property of the feature (as per MVT specs), and then deserialize it at the client in order to use the info within that property.  -->
 ## The MapLibreGL module
@@ -161,19 +164,19 @@ Source options:
 ## Benchmarks
 
 ### H3J
-Average overhead time of using `H3J` instead of loading an ol'GeoJSON. For 100 runs of `setH3JData`:
+Average overhead time of using `H3J` instead of loading a good ol'GeoJSON. For 100 runs of `setH3JData`:
 
 | H3J | sample 1 | sample 2 |
 |---|---|---|
 |# features|4938| 2477|
-|overhead (ms)|68|37|
-|overhead per cell (ms)|0.014|0.015|
+|overhead |68 ms|37 ms|
+|overhead per cell|0.014 ms|0.015 ms|
 
 ### H3T
-Average overhead for `H3T` rendering. For 500 tiles at zoom level 14, rendering H3 cells with levels 11 and 12:
+Average values for `H3T` rendering. For 500 tiles at zoom level 14, rendering H3 cells with levels 11 and 12:
 
 |   |   | 
 |---|---|
 |cells per tile|10437|
-|overhead per tile (ms)| 261 |
-|overhead per cell (ms)| 0.025 |
+|overhead per tile| 261 ms |
+|overhead per cell| 0.025 ms |
