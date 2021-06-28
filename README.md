@@ -155,8 +155,16 @@ Source options:
 Average overhead time of using `H3J` instead of loading an ol'GeoJSON. For 100 runs of `setH3JData`:
 
 
-| H3JS | sample 1 | sample 2 |
+| H3J | sample 1 | sample 2 |
 |---|---|---|
 |# features|4938| 2477|
 |overhead (ms)|68|37|
+|overhead per cell (ms)|0.014|0.015|
 
+Average values for `H3T` rendering
+
+| H3T | zoom level 14, H3 level 12| 
+|---|---|
+|cells per tile|10437|
+|overhead per tile (ms)| 261 |
+|overhead per cell (ms)| 0.025 |
