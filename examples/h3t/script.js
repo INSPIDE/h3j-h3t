@@ -1,7 +1,7 @@
 /* jshint esversion: 9 */
 
 import '../../maplibre/maplibre-gl.js';
-import '../../dist/h3t.js';
+import '../../dist/h3j_h3t.js';
 
 const lib = globalThis.maplibregl;
 
@@ -49,5 +49,5 @@ map.on('load', () => {
       "fill-opacity": 0.25,
     }
   });
-  
+
 });

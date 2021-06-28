@@ -61,6 +61,14 @@ Let's compare file sizes with raw GeoJSON:
 
 And `H3T`? Same format, but is served using a ZXY endpoint and each `.../z/x/y.h3t` file contains all the H3 cells that fall within the linked [quadkey tile](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system).
 
+Comparing the verage (gzipped) tile size for zoom level 14, H3 levels 11 and 12 (10437 features per tile)
+| MVT |  H3T| 
+|---|---|
+| 206 kB| 34.6 kB|
+
+So `H3T` tiles are ~ 6 times smaller than [MVT](https://github.com/mapbox/vector-tile-spec).
+
+<!-- One of the side effects of `H3T` format is that **you can add object and array properties to your features!!** To do so using MVT you need to serialize the object server-side to add the info as a text property of the feature (as per MVT specs), and then deserialize it at the client in order to use the info within that property.  -->
 ## The MapLibreGL module
 
 This module for [MapLibre GL](https://github.com/MapLibre/maplibre-gl-js) (starting with `v1.14.1-rc.2`) allows to generate [H3](https://h3geo.org/) cells geometry client side from compact data and render & manage them there.
@@ -71,7 +79,7 @@ Now that you wanna use it... First of all
 
 Then, just import it it as any other Node module out there.
 
-`require('h3t')`
+`require('h3j-h3t')`
 
 If you want an UMD bundle, you need to build it first
 
@@ -152,8 +160,8 @@ Source options:
 
 ## Benchmarks
 
+### H3J
 Average overhead time of using `H3J` instead of loading an ol'GeoJSON. For 100 runs of `setH3JData`:
-
 
 | H3J | sample 1 | sample 2 |
 |---|---|---|
@@ -161,9 +169,10 @@ Average overhead time of using `H3J` instead of loading an ol'GeoJSON. For 100 r
 |overhead (ms)|68|37|
 |overhead per cell (ms)|0.014|0.015|
 
-Average values for `H3T` rendering
+### H3T
+Average overhead for `H3T` rendering. For 500 tiles at zoom level 14, rendering H3 cells with levels 11 and 12:
 
-| H3T | zoom level 14, H3 level 12| 
+|   |   | 
 |---|---|
 |cells per tile|10437|
 |overhead per tile (ms)| 261 |
