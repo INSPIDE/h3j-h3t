@@ -61,7 +61,7 @@ Let's compare file sizes with raw GeoJSON:
 
 And `H3T`? Same format, but is served using a ZXY endpoint and each `.../z/x/y.h3t` file contains all the H3 cells that fall within the linked [quadkey tile](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system).
 
-Comparing the verage (gzipped) tile size for zoom level 14, H3 levels 11 and 12 (10437 features per tile)
+Comparing the average (gzipped) tile size for zoom level 14, H3 levels 11 and 12 (10437 features per tile)
 | MVT |  H3T| 
 |---|---|
 | 206 kB| 34.6 kB|
