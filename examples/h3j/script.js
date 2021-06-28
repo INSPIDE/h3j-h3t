@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+/* jshint esversion: 9 */
 
 import '../../maplibre/maplibre-gl.js';
 import '../../dist/h3t.js';
