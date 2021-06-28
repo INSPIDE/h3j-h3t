@@ -41,7 +41,7 @@ const gjclean = gj => {
 const vtclean = vt => {
   // https://github.com/maplibre/maplibre-gl-js/blob/4b753d23dde82af45c61cd76c0530face1346721/src/style-spec/types.js#L83
   const valid = ['type', 'url', 'tiles', 'bounds', 'scheme', 'minzoom', 'maxzoom', 'attribution', 'promoteId', 'volatile'];
-  return filterObject(gj, (k, v) => valid.includes(k));
+  return filterObject(vt, (k, v) => valid.includes(k));
 };
 const filterObject = (obj, callback) => {
   return Object.fromEntries(
@@ -86,8 +86,8 @@ const h3tsource = function (name, options) {
             fo,
             { "version": 2 }
           );
+        if (!!o.debug) console.log(`${zxy}: ${g.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
         callback(null, p, null, null);
-        if (!!o.debug) console.log(`${zxy}: ${js.features.length} features, ${(performance.now() - t).toFixed(0)} ms`);
       })
       .catch(e => {
         if (e.name === 'AbortError') e.message = `Timeout: Tile .../${zxy.join('/')}.h3t is taking too long to fetch`;

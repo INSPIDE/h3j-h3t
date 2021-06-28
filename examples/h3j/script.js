@@ -6,13 +6,15 @@ import '../../dist/h3t.js';
 const lib = globalThis.maplibregl;
 
 const map = new lib.Map({
-  container: 'map',
-  style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-  center: [-3.703793, 40.416687],
-  zoom: 14,
-  minZoom: 12,
-  maxZoom: 21,
+  "container": 'map',
+  "style": 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+  "center": [-3.703793, 40.416687],
+  "zoom": 16,
+  "minZoom": 14,
+  "maxZoom": 21,
+  "antialias": true
 });
+
 
 map.on('load', e => {
   map.addH3JSource(
