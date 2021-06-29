@@ -21,7 +21,7 @@ map.on('load', () => {
     'test-source', 
     {
       "sourcelayer": 'test-layer',
-      "tiles": ['h3tiles://portall-api.inspide.com/v0/indicators/pop/{z}/{x}/{y}.h3t?apikey=qb8UE3HrKzU8h78IpYeLKTOVJsdnt15u'],
+      "tiles": ['h3tiles://cryptic-temple-41553.herokuapp.com/{z}/{x}/{y}.h3t'],
       "minzoom": 14,
       "maxzoom": 14,
       "debug": true, 
