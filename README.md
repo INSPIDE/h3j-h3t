@@ -1,5 +1,5 @@
 # H3J / H3T
-### Light H3 data formats for client side geometry generation and rendering using MapLibreGL JS
+### Light H3 data formats for client side geometry generation and rendering using MapLibreGL
 
 ![img](sample.png)
 ## Why?
