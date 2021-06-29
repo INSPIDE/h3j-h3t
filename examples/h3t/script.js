@@ -9,7 +9,7 @@ const map = new lib.Map({
   "container": 'map',
   "style": 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
   "center": [-3.703622869000082,40.41711423898472],
-  "zoom": 14,
+  "zoom": 16,
   "minZoom": 14,
   "maxZoom": 21,
   "antialias": true
@@ -23,7 +23,7 @@ map.on('load', () => {
       "sourcelayer": 'test-layer',
       "tiles": ['h3tiles://cryptic-temple-41553.herokuapp.com/{z}/{x}/{y}.h3t'],
       "minzoom": 14,
-      "maxzoom": 18,
+      "maxzoom": 14,
       "debug": true, 
       "attribution": "© <a href='https://www.inspide.com/'>Inspide</a>"
     }
