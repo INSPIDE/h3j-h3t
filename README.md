@@ -89,7 +89,7 @@ If you want an UMD bundle, you need to build it first
 
 Then you can just import it in your JS code:
 
-`import 'dist/h3t.js';`
+`import 'dist/h3j_h3t.js';`
 
 ## Now what
 
