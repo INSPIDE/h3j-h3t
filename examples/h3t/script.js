@@ -23,7 +23,7 @@ map.on('load', () => {
       "sourcelayer": 'test-layer',
       "tiles": ['h3tiles://cryptic-temple-41553.herokuapp.com/{z}/{x}/{y}.h3t'],
       "minzoom": 14,
-      "maxzoom": 14,
+      "maxzoom": 18,
       "debug": true, 
       "attribution": "© <a href='https://www.inspide.com/'>Inspide</a>"
     }
