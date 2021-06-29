@@ -9,7 +9,7 @@ const map = new lib.Map({
   "container": 'map',
   "style": 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
   "center": [-3.703622869000082,40.41711423898472],
-  "zoom": 16,
+  "zoom": 14,
   "minZoom": 14,
   "maxZoom": 21,
   "antialias": true
