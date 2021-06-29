@@ -179,3 +179,7 @@ Average values for `H3T` rendering. For 500 tiles at zoom level 14, rendering H3
 |cells per tile|10437|
 |overhead per tile| 261 ms |
 |overhead per cell| 0.025 ms |
+
+## Examples
+* [H3J]()
+* [H3T]()
