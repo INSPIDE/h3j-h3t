@@ -8,7 +8,7 @@ const lib = globalThis.maplibregl;
 const map = new lib.Map({
   "container": 'map',
   "style": 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-  "center": [-3.703793, 40.416687],
+  "center": [-3.703622869000082,40.41711423898472],
   "zoom": 16,
   "minZoom": 14,
   "maxZoom": 21,

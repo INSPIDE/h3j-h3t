@@ -44,8 +44,8 @@ So, `H3J`:
 
 * It's a JSON format
 * It has a root `cells` property which is an array of
-* `cell` which is an object with arbitrary properties, 
-   * but the compulsory **`h3id`** property, which is the hexadecimal representation of the H3 index of that cell
+   * `cell` which is an object with arbitrary properties, 
+     * but the compulsory **`h3id`** property, which is the hexadecimal representation of the H3 index of that cell
 * Future proof! It might be extended with custom properties within `metadata` (optional) and be managed client side 
 
 You can find the [JSON schema](https://json-schema.org/) for `H3J` [**here**](h3j.schema.json).
