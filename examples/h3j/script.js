@@ -22,7 +22,8 @@ map.on('load', e => {
     'h3j_testsource',
     {
       "data": 'sample.h3j',
-      "debug": true
+      "debug": true, 
+      "attribution": "© <a href='https://www.inspide.com/'>Inspide</a>"
     }
   ).then(m => m.addLayer({
     "id": 'h3j_testlayer',

@@ -24,7 +24,8 @@ map.on('load', () => {
       "tiles": ['h3tiles://portall-api.inspide.com/v0/indicators/pop/{z}/{x}/{y}.h3t?apikey=qb8UE3HrKzU8h78IpYeLKTOVJsdnt15u'],
       "minzoom": 14,
       "maxzoom": 14,
-      "debug": true
+      "debug": true, 
+      "attribution": "© <a href='https://www.inspide.com/'>Inspide</a>"
     }
   );
 
