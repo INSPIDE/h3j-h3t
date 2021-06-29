@@ -4,7 +4,7 @@
 ![img](sample.png)
 ## Why?
 
-Because we, at [Inspide](https://www.inspide.com), generate a huge amount of spatial data where the geometry is implicitly represented by its H3 index, and it makes no sense to waste time and resources generating, storing and sending the geometries downstream to the client.
+Because we, at [Inspide](https://www.inspide.com), generate a huge amount of spatial data where the geometry is implicitly represented by its [H3](https://h3geo.org/) index, and it makes no sense to waste time and resources generating, storing and sending the geometries downstream to the client.
 
 ## The format
 
