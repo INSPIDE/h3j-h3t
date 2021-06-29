@@ -1,8 +1,7 @@
 # H3J / H3T
 ### Light H3 data formats for client side geometry generation and rendering
 
-
-
+![img](sample.png)
 ## Why?
 
 Because we, at [Inspide](www.inspide.com), generate a huge amount of spatial data where the geometry is implicitly represented by its H3 index, and it makes no sense to waste time and resources generating, storing and sending the geometries downstream to the client.
