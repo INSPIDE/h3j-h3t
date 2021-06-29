@@ -4,7 +4,7 @@
 ![img](sample.png)
 ## Why?
 
-Because we, at [Inspide](www.inspide.com), generate a huge amount of spatial data where the geometry is implicitly represented by its H3 index, and it makes no sense to waste time and resources generating, storing and sending the geometries downstream to the client.
+Because we, at [Inspide](https://www.inspide.com), generate a huge amount of spatial data where the geometry is implicitly represented by its H3 index, and it makes no sense to waste time and resources generating, storing and sending the geometries downstream to the client.
 
 ## The format
 
@@ -181,5 +181,5 @@ Average values for `H3T` rendering. For 500 tiles at zoom level 14, rendering H3
 |overhead per cell| 0.025 ms |
 
 ## Examples
-* [H3J]()
-* [H3T]()
+* [H3J](https://inspide.github.io/h3j-h3t/examples/h3j/index.html)
+* [H3T](https://inspide.github.io/h3j-h3t/examples/h3j/index.html)
