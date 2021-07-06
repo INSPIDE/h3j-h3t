@@ -1,6 +1,5 @@
 /* jshint esversion: 9 */
-
-import '../../maplibre/maplibre-gl.js';
+import 'https://unpkg.com/maplibre-gl/dist/maplibre-gl.js';
 import '../../dist/h3j_h3t.js';
 
 const lib = globalThis.maplibregl;
