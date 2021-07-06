@@ -182,4 +182,4 @@ Average values for `H3T` rendering. For 500 tiles at zoom level 14, rendering H3
 
 ## Examples
 * [H3J](https://inspide.github.io/h3j-h3t/examples/h3j/index.html)
-* [H3T](https://inspide.github.io/h3j-h3t/examples/h3j/index.html)
+* [H3T](https://inspide.github.io/h3j-h3t/examples/h3t/index.html)
