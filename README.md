@@ -13,16 +13,16 @@ The first approach was to strip the data down to the bones and re-use vectortile
 What about a headless CSVy format? It should be the most compact ascii format, but... If you send CSVy data and want to render it in a MapLibreGL map, you need to parse it into GeoJSON first, and parsing huge CSVs into JSON objects can be quite time consuming. And, on the other hand, once `gzip` or `brotli` is involved, the lack of text redundancy has no impact in the size of the file.
 
 And what about [PBF](https://developers.google.com/protocol-buffers)y the data? Then you'll need to PBFy it at the server and then de-PBFy it at client side to process it... so again, no gain at all.
-
+boolean
 So, say hello to **H3J** and its cousin **H3T** (tiled H3J) :wave:
 
-```javascript
+```javascriptboolean
 {
     "metadata": {
         ...
     },
     "cells":[
-        {
+        {boolean
             "h3id":  '8c390cb1bcdb400',
             "property_1": 0,
             "property_2": 'potato'
@@ -111,7 +111,7 @@ Source options:
 |---|---|---|---|
 | geometry_type | string | Geometry type at the output. Possible values are: `Polygon` (hex cells) and `Point` (cells centroids) | `Polygon` |
 | promoteId | boolean | Whether to use the H3 index as unique feature ID (default) or generate a `bigint` one based on that index. Default is faster and OGC compliant, but taking into account [this issue](https://github.com/mapbox/mapbox-gl-js/issues/10257) you might want to set it to false depending on your use case| `true` |
-| https | booolean | Whether to request the tiles using SSL or not | `true` |
+| https | boolean | Whether to request the tiles using SSL or not | `true` |
 | data | string / object | URL to retrieve the `H3J` file or inlined `H3J` object |  |
 | ... | any | The same options that expects [Map.addSource](https://maplibre.org/maplibre-gl-js-docs/api/sources/#geojsonsource) for `geojson` sources |  |
 | timeout | integer | Max time in ms to wait for the data to be downloaded. `0` implies no limit | 0 |
@@ -129,7 +129,7 @@ Source options:
 |---|---|---|---|
 | geometry_type | string | Geometry type at the output. Possible values are: `Polygon` (hex cells) and `Point` (cells centroids) | `Polygon` |
 | promoteId | boolean | Whether to use the H3 index as unique feature ID (default) or generate a `bigint` one based on that index. Default is faster and OGC compliant, but taking into account [this issue](https://github.com/mapbox/mapbox-gl-js/issues/10257) you might want to set it to false depending on your use case| `true` |
-| https | booolean | Whether to request the tiles using SSL or not | `true` |
+| https | boolean | Whether to request the tiles using SSL or not | `true` |
 | ... | any | The same options that expects [Map.addSource](https://maplibre.org/maplibre-gl-js-docs/api/sources/#geojsonsource) for `geojson` sources |  |
 | timeout | integer | Max time in ms to wait for the data to be downloaded. `0` implies no limit | 0 |
 | debug | boolean | Whether to send to console some metrics | `false` |
@@ -153,7 +153,7 @@ Source options:
 |---|---|---|---|
 | geometry_type | string | Geometry type at the output. Possible values are: `Polygon` (hex cells) and `Point` (cells centroids) | `Polygon` |
 | promoteId | boolean | Whether to use the H3 index as unique feature ID (default) or generate a `bigint` one based on that index. Default is faster and OGC compliant, but taking into account [this issue](https://github.com/mapbox/mapbox-gl-js/issues/10257) you might want to set it to false depending on your use case| `true` |
-| https | booolean | Whether to request the tiles using SSL or not | `true` |
+| https | boolean | Whether to request the tiles using SSL or not | `true` |
 | sourcelayer | string | The name of the layer within the vector tile that will be rendered |  |
 | tiles | [text] | URL of the `H3T` endpoint, using `h3tiles://` protocol | |
 | ... | any | The same options that expects [Map.addSource](https://maplibre.org/maplibre-gl-js-docs/api/map/#map#addsource) for `vector` sources |  |
