@@ -13,16 +13,16 @@ The first approach was to strip the data down to the bones and re-use vectortile
 What about a headless CSVy format? It should be the most compact ascii format, but... If you send CSVy data and want to render it in a MapLibreGL map, you need to parse it into GeoJSON first, and parsing huge CSVs into JSON objects can be quite time consuming. And, on the other hand, once `gzip` or `brotli` is involved, the lack of text redundancy has no impact in the size of the file.
 
 And what about [PBF](https://developers.google.com/protocol-buffers)y the data? Then you'll need to PBFy it at the server and then de-PBFy it at client side to process it... so again, no gain at all.
-boolean
+
 So, say hello to **H3J** and its cousin **H3T** (tiled H3J) :wave:
 
-```javascriptboolean
+```javascript
 {
     "metadata": {
         ...
     },
     "cells":[
-        {boolean
+        {
             "h3id":  '8c390cb1bcdb400',
             "property_1": 0,
             "property_2": 'potato'
